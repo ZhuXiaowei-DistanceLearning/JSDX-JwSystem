@@ -1,0 +1,253 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+	<!-- 导入jquery核心类库 -->
+	<script type="text/javascript"
+			src="${pageContext.request.contextPath }/js/jquery-1.8.3.js"
+			th:src="@{//localhost:8082/assert/js/jquery-1.8.3.js}"></script>
+	<!-- 导入easyui类库 -->
+	<link id="easyuiTheme" rel="stylesheet" type="text/css"
+		  href="${pageContext.request.contextPath }/js/easyui/themes/default/easyui.css"
+		  th:href="@{//localhost:8082/assert/js/easyui/themes/default/easyui.css}">
+	<link rel="stylesheet" type="text/css"
+		  href="${pageContext.request.contextPath }/js/easyui/themes/icon.css"
+		  th:href="@{//localhost:8082/assert/js/easyui/themes/icon.css}">
+	<link rel="stylesheet" type="text/css"
+		  href="${pageContext.request.contextPath }/css/default.css"
+		  th:href="@{//localhost:8082/assert/css/default.css}">
+	<script type="text/javascript"
+			src="${pageContext.request.contextPath }/js/easyui/jquery.easyui.min.js"
+			th:src="@{//localhost:8082/assert/js/easyui/jquery.easyui.min.js}"></script>
+	<!-- 导入ztree类库 -->
+	<link rel="stylesheet"
+		  href="${pageContext.request.contextPath }/js/ztree/zTreeStyle.css"
+		  type="text/css" th:href="@{//localhost:8082/assert/js/ztree/zTreeStyle.css}"/>
+	<script
+			src="${pageContext.request.contextPath }/js/ztree/jquery.ztree.all-3.5.js"
+			type="text/javascript" th:src="@{//localhost:8082/assert/js/ztree/jquery.ztree.all-3.5.js}"></script>
+	<script
+			src="${pageContext.request.contextPath }/js/easyui/locale/easyui-lang-zh_CN.js"
+			type="text/javascript" th:src="@{//localhost:8082/assert/js/easyui/locale/easyui-lang-zh_CN.js}"></script>
+	<script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
+<script type="text/javascript">
+	function doAdd() {
+		//alert("增加...");
+		$('#addStaffWindow').window("open");
+	}
+
+	function doView() {
+		alert("查看...");
+	}
+
+	function doDelete() {
+		var rows = $("#grid").datagrid("getSelections");
+		if (rows.length == 0) {
+			$.messager.alert("提示信息", "请选择要删除的记录", "error");
+		} else {
+			var array = new Array();
+			for (var i = 0; i < rows.length; i++) {
+				var id = rows[i].id;
+				array.push(id);
+			}
+			var ids = array.join(",");
+			window.location.href = "${pageContext.request.contextPath}/specialty/delete.action?ids="
+					+ ids;
+		}
+	}
+
+	function doRestore() {
+		alert("将取派员还原...");
+	}
+	//工具栏
+	var toolbar = [ {
+		id : 'button-add',
+		text : '增加',
+		iconCls : 'icon-add',
+		handler : doAdd
+	}];
+	// 定义列
+	var columns = [ [ {
+		field : 'id',
+		title : '专业编号',
+		width : 200,
+		checkbox : true,
+	}, {
+		field : 'collegeName',
+		title : '学院名称',
+		width : 200,
+		align : 'center'
+	}, {
+		field : 'name',
+		title : '专业名称',
+		width : 200,
+		align : 'center'
+	}, {
+		field : 'status',
+		title : '是否可用',
+		width : 200,
+		align : 'center',
+		formatter : function(data, row, index) {
+			if (data == "0") {
+				return "正常使用"
+			} else {
+				return "已作废";
+			}
+		}
+	} ] ];
+
+	$(function() {
+		// 先将body隐藏，再显示，不会出现页面刷新效果
+		$("body").css({
+			visibility : "visible"
+		});
+
+		// 取派员信息表格
+		$('#grid')
+				.datagrid(
+						{
+							iconCls : 'icon-forward',
+							fit : true,
+							border : false,
+							rownumbers : true,
+							striped : true,
+							pageList : [ 30, 50, 100 ],
+							pagination : true,
+							toolbar : toolbar,
+							method: 'get',
+							url : "http://localhost:10010/manager/specialty/pageQuery",
+							idField : 'id',
+							columns : columns,
+							onDblClickRow : doDblClickRow
+						});
+
+		// 添加取派员窗口
+		$('#addStaffWindow').window({
+			title : '添加专业',
+			width : 400,
+			modal : true,
+			shadow : true,
+			closed : true,
+			height : 400,
+			resizable : false
+		});
+
+		$('#editStaffWindow').window({
+			title : '修改专业',
+			width : 400,
+			modal : true,
+			shadow : true,
+			closed : true,
+			height : 400,
+			resizable : false
+		});
+
+	});
+
+	function doDblClickRow(rowIndex, rowData) {
+		$("#editStaffWindow").window("open");
+		$("#editSpecialtyForm").form("load", rowData);
+	}
+</script>
+</head>
+<body class="easyui-layout" style="visibility: hidden;">
+	<div region="center" border="false">
+		<table id="grid"></table>
+	</div>
+
+	<div class="easyui-window" title="对学院进行添加或者修改" id="addStaffWindow"
+		collapsible="false" minimizable="false" maximizable="false"
+		style="top: 20px; left: 200px">
+		<div region="north" style="height: 31px; overflow: hidden;"
+			split="false" border="false">
+			<div class="datagrid-toolbar">
+				<a id="save" icon="icon-save" href="#" class="easyui-linkbutton"
+					plain="true">保存</a>
+				<script type="text/javascript">
+					$("#save").click(function() {
+						var r = $("#addSpecialtyForm").form("validate");
+						if (r) {
+							$("#addSpecialtyForm").submit();
+						}
+					});
+				</script>
+			</div>
+		</div>
+
+		<div region="center" style="overflow: auto; padding: 5px;"
+			border="false">
+			<form id="addSpecialtyForm" action="addSpecialty.action"
+				method="post">
+				<table class="table-edit" width="80%" align="center">
+					<tr class="title">
+						<td colspan="2">专业信息</td>
+					</tr>
+					<tr>
+						<td>专业名称</td>
+						<td><input type="text" name="name" class="easyui-validatebox"
+							required="true" /></td>
+					</tr>
+					<tr>
+						<td>选择学院</td>
+						<td><input class="easyui-combobox" required="true"
+							name="collegeId"
+							data-options="valueField:'id',textField:'name',method:'get',url:'http://localhost:10010/manager/college/listajax'" />
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+	</div>
+
+	<!-- 修改专业信息 -->
+	<div class="easyui-window" title="对学院进行添加或者修改" id="editStaffWindow"
+		collapsible="false" minimizable="false" maximizable="false"
+		style="top: 20px; left: 200px">
+		<div region="north" style="height: 31px; overflow: hidden;"
+			split="false" border="false">
+			<div class="datagrid-toolbar">
+				<a id="editSave" icon="icon-save" href="#" class="easyui-linkbutton"
+					plain="true">保存</a>
+				<script type="text/javascript">
+					$("#editSave").click(function() {
+						var r = $("#editSpecialtyForm").form("validate");
+						if (r) {
+							$("#editSpecialtyForm").submit();
+						}
+					});
+				</script>
+			</div>
+		</div>
+
+		<div region="center" style="overflow: auto; padding: 5px;"
+			border="false">
+			<form id="editSpecialtyForm" action="updateSpecialty.action"
+				method="post">
+				<table class="table-edit" width="80%" align="center">
+					<tr class="title">
+						<td colspan="2">学院信息</td>
+					</tr>
+					<input type="hidden" name="id" />
+					<input type="hidden" name="status" />
+					<tr>
+						<td>专业名称</td>
+						<td><input type="text" name="name" class="easyui-validatebox"
+							required="true" /></td>
+					</tr>
+					<tr>
+						<td>选择学院</td>
+						<td><input class="easyui-combobox" required="true"
+							name="collegeId"
+							data-options="valueField:'id',method:'get',textField:'name',url:'http://localhost:10010/manager/college/listajax'" />
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+	</div>
+
+</body>
+</html>

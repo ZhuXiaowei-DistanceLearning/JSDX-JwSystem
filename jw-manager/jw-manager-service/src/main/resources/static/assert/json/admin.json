@@ -1,0 +1,5 @@
+[
+	    { "id":"1001", "pId":"11", "name":"教师管理","page":"teacher/page.action"},
+		{ "id":"1002", "pId":"100", "name":"功能权限管理", "page":"role/page.action"},
+		{ "id":"1003", "pId":"100", "name":"角色管理", "page":"function/page.action"}
+]

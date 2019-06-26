@@ -1,0 +1,34 @@
+server:
+  port: 8082
+spring:
+  application:
+    name: manager-service
+  thymeleaf:
+    cache: false
+  datasource:
+    username: root
+    password: 123456
+    url: jdbc:mysql://localhost:3306/new?userSSL=false&&characterEncoding=utf8
+    driver-class-name: com.mysql.jdbc.Driver
+  data:
+    mongodb:
+      database: text
+      host: localhost
+      uri: mongodb://127.0.0.1:27017
+eureka:
+  instance:
+    instance-id: ${spring.application.name}:${server.port}
+    prefer-ip-address: true
+    ip-address: 127.0.0.1
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:10086/eureka
+mybatis-plus:
+  global-config:
+    #    全局主键配置策略
+    id-type: 0
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+##      全局的表前缀配置
+##   table-prefix:  t_
+

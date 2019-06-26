@@ -1,0 +1,143 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Insert title here</title>
+        <!-- 导入jquery核心类库 -->
+        <script type="text/javascript"
+                src="${pageContext.request.contextPath }/js/jquery-1.8.3.js"
+                th:src="@{//localhost:8082/assert/js/jquery-1.8.3.js}"></script>
+        <!--        <script type="text/javascript"-->
+        <!--                src="${pageContext.request.contextPath }/js/jquery-1.8.3.js"-->
+        <!--                th:src="@{//localhost:8082/assert/js/vue.js}"></script>-->
+        <!--        <link type="text/css" th:href="@{//localhost:8082/assert/css/bootstrap.min.css}" rel="stylesheet">-->
+        <script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
+        <style>
+            .bg {
+                height: 1070px;
+                width: 1170px;
+                box-shadow: 0 0 5px rgba(0, 0, 0, 2);
+                margin: 50px auto;
+            }
+        </style>
+    </head>
+<body>
+<div class="bg">
+    <table border="1px solid #eee" width="1170px">
+        <tbody id="xls">
+        <tr>
+            <td></td>
+            <td>A</td>
+            <td>B</td>
+            <td>C</td>
+            <td>D</td>
+            <td>E</td>
+            <td>F</td>
+            <td>G</td>
+            <td>H</td>
+        </tr>
+        <tr id="one">
+            <td>1</td>
+            <td>id</td>
+            <td>密码</td>
+            <td>姓名</td>
+            <td>性别</td>
+            <td>户籍</td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr id="two">
+            <td>2</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr id="three">
+            <td>3</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr id="four">
+            <td>4</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr id="five">
+            <td>5</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr id="six">
+            <td>6</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr id="seven">
+            <td>7</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+<script th:inline="javascript">
+    const list = /*[[${list}]]*/ {};
+    let targetTr = document.getElementById("xls").children;
+    let arr = new Array();
+    for (let b of targetTr) {
+        arr.push(b.getAttribute("id"));
+    }
+    let j = 1;
+    for (let i = 0; i < list.length; i++) {
+        $.each(list[i], function (key, value) {
+            if (value != null) {
+                // let targetTr = document.getElementById("" + arr[i + 2] + "").children;
+                // targetTr[j].innerHTML = value
+                // j++;
+                let targetTr = $("#" + arr[i + 2] + " td");
+                targetTr[j].innerHTML = value;
+                j++;
+            }
+        });
+    }
+</script>
+</html>

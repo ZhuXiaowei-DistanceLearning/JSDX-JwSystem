@@ -1,6 +1,8 @@
 # JSDX-JwSystem
 ## 基于springcloud的教务管理系统
-
+@Author:zxw
+@school:吉首大学
+@email:502513206@qq.com
 ### 技术栈：
 
 1.   springcloud
